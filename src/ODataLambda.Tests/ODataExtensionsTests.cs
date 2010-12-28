@@ -1,19 +1,19 @@
 namespace ODataLambda.Tests
 {
-    using System;
-    using System.Data.Services.Client;
+    using Extensions;
     using Fakes;
     using NUnit.Framework;
-    using Should;
 
     public class ODataExtensionsTests
     {
         private FakeContext fakeContext;
+        private string orders;
 
         [SetUp]
         public void Setup()
         {
             fakeContext = new FakeContext();
+            orders = fakeContext.BaseUri + "/Orders()?";
         }
 
         [Test]
@@ -21,7 +21,7 @@ namespace ODataLambda.Tests
         {
             var query = fakeContext.Orders.Expand(x => x.Product);
 
-            UriShouldContain(query, "$expand=Product");
+            query.UriShouldEqual(orders + "$expand=Product");
         }
 
         [Test]
@@ -29,7 +29,7 @@ namespace ODataLambda.Tests
         {
             var query = fakeContext.Orders.Expand(x => x.Product.Id);
 
-            UriShouldContain(query, "$expand=Product/Id");
+            query.UriShouldEqual(orders + "$expand=Product/Id");
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace ODataLambda.Tests
         {
             var query = fakeContext.Orders.Expand(x => x.Product.Order.Product.Order.Product.Order.Product.Order.Product.Order);
 
-            UriShouldContain(query, "$expand=Product/Order/Product/Order/Product/Order/Product/Order/Product/Order");
+            query.UriShouldEqual(orders + "$expand=Product/Order/Product/Order/Product/Order/Product/Order/Product/Order");
         }
 
         [Test]
@@ -45,14 +45,15 @@ namespace ODataLambda.Tests
         {
             var query = fakeContext.Orders.Expand(x => x.Products.Expand(y => y.Order));
 
-            UriShouldContain(query, "$expand=Products/Order");
+            query.UriShouldEqual(orders + "$expand=Products/Order");
         }
 
-        private static void UriShouldContain(DataServiceQuery query, string expected)
+        [Test]
+        public void Should_expand_in_collection_deeply_nested_property()
         {
-            string requestUri = query.RequestUri.ToString();
-            Console.WriteLine(requestUri);
-            requestUri.ShouldContain(expected);
+            var query = fakeContext.Orders.Expand(x => x.Products.Expand(y => y.Order.Product.Order.Product.Id));
+
+            query.UriShouldEqual(orders + "$expand=Products/Order/Product/Order/Product/Id");
         }
     }
 }

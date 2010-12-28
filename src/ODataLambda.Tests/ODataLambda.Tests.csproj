@@ -56,6 +56,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Extensions\DataServiceQueryExtensions.cs" />
     <Compile Include="Fakes\FakeContext.cs" />
     <Compile Include="Fakes\FakeOrder.cs" />
     <Compile Include="Fakes\FakeProduct.cs" />
