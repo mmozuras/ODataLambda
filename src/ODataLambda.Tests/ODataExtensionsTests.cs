@@ -1,5 +1,6 @@
 namespace ODataLambda.Tests
 {
+    using System.Data.Services.Client;
     using Extensions;
     using Fakes;
     using NUnit.Framework;
@@ -55,6 +56,14 @@ namespace ODataLambda.Tests
             var query = fakeContext.Orders.Expand(x => x.Products.Expand(y => y.Order.Product.Order.Product.Id));
 
             query.UriShouldEqual(orders + "$expand=Products/Order/Product/Order/Product/Id");
-        }     
+        }
+
+        [Test]
+        public void Should_expand_all_properties()
+        {
+            var query = fakeContext.Orders.ExpandAll();
+
+            query.UriShouldEqual(orders + "$expand=Product,Products");
+        }
     }
 }

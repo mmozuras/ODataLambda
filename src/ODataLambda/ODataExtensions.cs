@@ -1,6 +1,7 @@
 namespace ODataLambda
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Services.Client;
     using System.Linq;
     using System.Linq.Expressions;
@@ -26,6 +27,12 @@ namespace ODataLambda
             return query.Expand(propertyPath);
         }
 
+        public static DataServiceQuery<T> ExpandAll<T>(this DataServiceQuery<T> query)
+        {
+            var properties = GetReferenceTypeProperties<T>();
+            return properties.Aggregate(query, (current, property) => current.Expand(property.Name));
+        }
+
         public static string Expand<T, TProperty>(this DataServiceCollection<T> collection, Expression<Func<T, TProperty>> expression)
         {
             return expression.ToPropertyPath();
@@ -33,11 +40,17 @@ namespace ODataLambda
 
         private static void ForEachProperty<T>(Action<PropertyInfo> action)
         {
-            var properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            var properties = GetReferenceTypeProperties<T>();
             foreach (var property in properties)
             {
                 action(property);
             }
+        }
+
+        private static IEnumerable<PropertyInfo> GetReferenceTypeProperties<T>()
+        {
+            return typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(x => !x.PropertyType.IsValueType);
         }
 
         private static string ToPropertyPath(this Expression expression)
