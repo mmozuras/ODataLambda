@@ -9,6 +9,41 @@ namespace ODataLambda
 
     public static class ODataExtensions
     {
+        public static void SetLink<TSource, TPropType>(this DataServiceContext context, TSource source,
+            Expression<Func<TSource, TPropType>> sourceProperty, object target)
+        {
+            string propertyPath = sourceProperty.ToPropertyPath();
+            context.SetLink(source, propertyPath, target);
+        }
+
+        public static void AddLink<TSource, TPropType>(this DataServiceContext context, TSource source,
+            Expression<Func<TSource, TPropType>> sourceProperty, object target)
+        {
+            string propertyPath = sourceProperty.ToPropertyPath();
+            context.AddLink(source, propertyPath, target);
+        }
+
+        public static void DeleteLink<TSource, TPropType>(this DataServiceContext context, TSource source,
+            Expression<Func<TSource, TPropType>> sourceProperty, object target)
+        {
+            string propertyPath = sourceProperty.ToPropertyPath();
+            context.DeleteLink(source, propertyPath, target);
+        }
+
+        public static void AttachLink<TSource, TPropType>(this DataServiceContext context, TSource source,
+            Expression<Func<TSource, TPropType>> sourceProperty, object target)
+        {
+            string propertyPath = sourceProperty.ToPropertyPath();
+            context.AttachLink(source, propertyPath, target);
+        }
+
+        public static void DetachLink<TSource, TPropType>(this DataServiceContext context, TSource source,
+            Expression<Func<TSource, TPropType>> sourceProperty, object target)
+        {
+            string propertyPath = sourceProperty.ToPropertyPath();
+            context.DetachLink(source, propertyPath, target);
+        }
+
         public static void LoadProperty<T, TProperty>(this DataServiceContext context, T entity,
             Expression<Func<T, TProperty>> expression)
         {
@@ -21,9 +56,9 @@ namespace ODataLambda
             ForEachProperty<T>(p => context.LoadProperty(entity, p.Name));
         }
 
-        public static DataServiceQuery<T> Expand<T, TProperty>(this DataServiceQuery<T> query, Expression<Func<T, TProperty>> expression)
+        public static DataServiceQuery<T> Expand<T, TProperty>(this DataServiceQuery<T> query, Expression<Func<T, TProperty>> property)
         {
-            string propertyPath = expression.ToPropertyPath();
+            string propertyPath = property.ToPropertyPath();
             return query.Expand(propertyPath);
         }
 
@@ -33,9 +68,9 @@ namespace ODataLambda
             return properties.Aggregate(query, (current, property) => current.Expand(property.Name));
         }
 
-        public static string Expand<T, TProperty>(this DataServiceCollection<T> collection, Expression<Func<T, TProperty>> expression)
+        public static string Expand<T, TProperty>(this DataServiceCollection<T> collection, Expression<Func<T, TProperty>> property)
         {
-            return expression.ToPropertyPath();
+            return property.ToPropertyPath();
         }
 
         private static void ForEachProperty<T>(Action<PropertyInfo> action)

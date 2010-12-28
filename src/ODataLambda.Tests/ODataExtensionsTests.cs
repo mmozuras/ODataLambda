@@ -1,6 +1,5 @@
 namespace ODataLambda.Tests
 {
-    using System.Data.Services.Client;
     using Extensions;
     using Fakes;
     using NUnit.Framework;
@@ -10,11 +9,19 @@ namespace ODataLambda.Tests
     {
         private FakeContext fakeContext;
         private string orders;
+        private FakeOrder fakeOrder;
+        private FakeProduct fakeProduct;
 
         [SetUp]
         public void Setup()
         {
             fakeContext = new FakeContext();
+            fakeOrder = new FakeOrder();
+            fakeProduct = new FakeProduct();
+
+            fakeContext.AddObject("Orders", fakeOrder);
+            fakeContext.AddObject("Product", fakeProduct);
+
             orders = fakeContext.BaseUri + "/Orders()?";
         }
 
@@ -64,6 +71,25 @@ namespace ODataLambda.Tests
             var query = fakeContext.Orders.ExpandAll();
 
             query.UriShouldEqual(orders + "$expand=Product,Products");
+        }
+
+        [Test]
+        public void Should_add_link()
+        {
+            fakeContext.AddLink(fakeOrder, x => x.Products, fakeProduct);
+        }
+
+        [Test]
+        public void Should_set_link()
+        {
+            fakeContext.SetLink(fakeOrder, x => x.Product, fakeProduct);
+        }
+
+        [Test]
+        public void Should_delete_link()
+        {
+            fakeContext.AddLink(fakeOrder, x => x.Products, fakeProduct);
+            fakeContext.DeleteLink(fakeOrder, x => x.Products, fakeProduct);
         }
     }
 }

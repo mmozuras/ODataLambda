@@ -42,5 +42,15 @@ namespace ODataLambda.Tests
             session.Manifests.ShouldNotBeEmpty();
             session.DownloadableContent.ShouldNotBeEmpty();
         }
+
+        [Test]
+        public void Should_detach_and_attach_link()
+        {
+            var session = context.Sessions.Expand(x => x.Manifests).First();
+            Manifest firstManifest = session.Manifests.First();
+
+            context.DetachLink(session, x => x.Manifests, firstManifest);
+            context.AttachLink(session, x => x.Manifests, firstManifest);
+        }
     }
 }
