@@ -46,6 +46,8 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Services.Client" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -60,16 +62,37 @@
     <Compile Include="Fakes\FakeContext.cs" />
     <Compile Include="Fakes\FakeOrder.cs" />
     <Compile Include="Fakes\FakeProduct.cs" />
+    <Compile Include="ODataExtensionsIntegrationTests.cs" />
     <Compile Include="ODataExtensionsTests.cs" />
+    <Compile Include="Service References\MicrosoftPdcData\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.datasvcmap</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Service References\MicrosoftPdcData\service.edmx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ODataLambda\ODataLambda.csproj">
       <Project>{1F8EEED7-FD98-42BF-AE1E-721576D470F1}</Project>
       <Name>ODataLambda</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ServiceReferenceMetadataStorage Include="Service References\MicrosoftPdcData\">
+      <Type>datasvcmap</Type>
+    </ServiceReferenceMetadataStorage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\MicrosoftPdcData\Reference.datasvcmap">
+      <Generator>DataServiceClientGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

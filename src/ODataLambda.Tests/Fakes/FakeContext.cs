@@ -8,10 +8,8 @@
         public FakeContext() : base(new Uri("http://localhost/Fake"))
         {
             Orders = CreateQuery<FakeOrder>("Orders");
-            Products = CreateQuery<FakeProduct>("Products");
         }
 
-        public DataServiceQuery<FakeOrder> Orders { get; set; }
-        public DataServiceQuery<FakeProduct> Products { get; set; }
+        public DataServiceQuery<FakeOrder> Orders { get; private set; }
     }
 }

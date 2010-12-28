@@ -1,0 +1,183 @@
+﻿<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <edmx:DataServices xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" m:DataServiceVersion="1.0">
+    <Schema Namespace="Shared.Model" xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
+      <EntityType Name="Schedule">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.String" Nullable="false" />
+        <Property Name="Error" Type="Edm.String" Nullable="true" />
+        <NavigationProperty Name="Tracks" Relationship="Shared.Model.Schedule_Tracks" FromRole="Schedule" ToRole="Tracks" />
+        <NavigationProperty Name="TimeSlots" Relationship="Shared.Model.Schedule_TimeSlots" FromRole="Schedule" ToRole="TimeSlots" />
+        <NavigationProperty Name="Speakers" Relationship="Shared.Model.Schedule_Speakers" FromRole="Schedule" ToRole="Speakers" />
+        <NavigationProperty Name="Sessions" Relationship="Shared.Model.Schedule_Sessions" FromRole="Schedule" ToRole="Sessions" />
+      </EntityType>
+      <EntityType Name="Session">
+        <Key>
+          <PropertyRef Name="SessionId" />
+        </Key>
+        <Property Name="SessionState" Type="Edm.String" Nullable="true" />
+        <Property Name="Tags" Type="Edm.String" Nullable="true" />
+        <Property Name="SessionId" Type="Edm.Guid" Nullable="false" />
+        <Property Name="TrackId" Type="Edm.String" Nullable="true" />
+        <Property Name="TimeSlotId" Type="Edm.Guid" Nullable="false" />
+        <Property Name="Code" Type="Edm.String" Nullable="true" />
+        <Property Name="TwitterHashtag" Type="Edm.String" Nullable="true" />
+        <Property Name="ThumbnailUrl" Type="Edm.String" Nullable="true" />
+        <Property Name="ShortUrl" Type="Edm.String" Nullable="true" />
+        <Property Name="Room" Type="Edm.String" Nullable="true" />
+        <Property Name="StartTime" Type="Edm.Int32" Nullable="false" />
+        <Property Name="ShortTitle" Type="Edm.String" Nullable="true" />
+        <Property Name="ShortDescription" Type="Edm.String" Nullable="true" />
+        <Property Name="FullTitle" Type="Edm.String" Nullable="true" />
+        <Property Name="FullDescription" Type="Edm.String" Nullable="true" />
+        <NavigationProperty Name="Manifests" Relationship="Shared.Model.Session_Manifests" FromRole="Session" ToRole="Manifests" />
+        <NavigationProperty Name="Presenters" Relationship="Shared.Model.Session_Presenters" FromRole="Session" ToRole="Presenters" />
+        <NavigationProperty Name="DownloadableContent" Relationship="Shared.Model.Session_DownloadableContent" FromRole="Session" ToRole="DownloadableContent" />
+        <NavigationProperty Name="BackgroundMaterials" Relationship="Shared.Model.Session_BackgroundMaterials" FromRole="Session" ToRole="BackgroundMaterials" />
+        <NavigationProperty Name="RelatedSessions" Relationship="Shared.Model.Session_RelatedSessions" FromRole="Session" ToRole="RelatedSessions" />
+      </EntityType>
+      <EntityType Name="Track">
+        <Key>
+          <PropertyRef Name="Name" />
+        </Key>
+        <Property Name="Name" Type="Edm.String" Nullable="false" />
+        <Property Name="Title" Type="Edm.String" Nullable="true" />
+      </EntityType>
+      <EntityType Name="TimeSlot">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Duration" Type="Edm.String" Nullable="true" />
+        <Property Name="Id" Type="Edm.Guid" Nullable="false" />
+        <Property Name="Start" Type="Edm.DateTime" Nullable="false" />
+        <Property Name="StartString" Type="Edm.String" Nullable="true" />
+        <Property Name="End" Type="Edm.DateTime" Nullable="false" />
+        <Property Name="EndString" Type="Edm.String" Nullable="true" />
+      </EntityType>
+      <EntityType Name="Speaker">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Guid" Nullable="false" />
+        <Property Name="FullName" Type="Edm.String" Nullable="true" />
+        <Property Name="PhotoUrl" Type="Edm.String" Nullable="true" />
+        <Property Name="Bio" Type="Edm.String" Nullable="true" />
+      </EntityType>
+      <EntityType Name="Manifest">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.String" Nullable="false" />
+        <Property Name="Format" Type="Edm.String" Nullable="true" />
+        <Property Name="Url" Type="Edm.String" Nullable="true" />
+      </EntityType>
+      <EntityType Name="Presenter">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <EntityType Name="Content">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Title" Type="Edm.String" Nullable="true" />
+        <Property Name="Description" Type="Edm.String" Nullable="true" />
+        <Property Name="Id" Type="Edm.String" Nullable="false" />
+        <Property Name="Url" Type="Edm.String" Nullable="true" />
+      </EntityType>
+      <EntityType Name="RelatedSession">
+        <Key>
+          <PropertyRef Name="SessionId" />
+        </Key>
+        <Property Name="SessionId" Type="Edm.Guid" Nullable="false" />
+      </EntityType>
+      <Association Name="Schedule_Tracks">
+        <End Role="Schedule" Type="Shared.Model.Schedule" Multiplicity="*" />
+        <End Role="Tracks" Type="Shared.Model.Track" Multiplicity="*" />
+      </Association>
+      <Association Name="Schedule_TimeSlots">
+        <End Role="Schedule" Type="Shared.Model.Schedule" Multiplicity="*" />
+        <End Role="TimeSlots" Type="Shared.Model.TimeSlot" Multiplicity="*" />
+      </Association>
+      <Association Name="Schedule_Speakers">
+        <End Role="Schedule" Type="Shared.Model.Schedule" Multiplicity="*" />
+        <End Role="Speakers" Type="Shared.Model.Speaker" Multiplicity="*" />
+      </Association>
+      <Association Name="Schedule_Sessions">
+        <End Role="Schedule" Type="Shared.Model.Schedule" Multiplicity="*" />
+        <End Role="Sessions" Type="Shared.Model.Session" Multiplicity="*" />
+      </Association>
+      <Association Name="Session_Manifests">
+        <End Role="Session" Type="Shared.Model.Session" Multiplicity="*" />
+        <End Role="Manifests" Type="Shared.Model.Manifest" Multiplicity="*" />
+      </Association>
+      <Association Name="Session_Presenters">
+        <End Role="Session" Type="Shared.Model.Session" Multiplicity="*" />
+        <End Role="Presenters" Type="Shared.Model.Presenter" Multiplicity="*" />
+      </Association>
+      <Association Name="Session_DownloadableContent">
+        <End Role="Session" Type="Shared.Model.Session" Multiplicity="*" />
+        <End Role="DownloadableContent" Type="Shared.Model.Content" Multiplicity="*" />
+      </Association>
+      <Association Name="Session_BackgroundMaterials">
+        <End Role="Session" Type="Shared.Model.Session" Multiplicity="*" />
+        <End Role="BackgroundMaterials" Type="Shared.Model.Content" Multiplicity="*" />
+      </Association>
+      <Association Name="Session_RelatedSessions">
+        <End Role="Session" Type="Shared.Model.Session" Multiplicity="*" />
+        <End Role="RelatedSessions" Type="Shared.Model.RelatedSession" Multiplicity="*" />
+      </Association>
+    </Schema>
+    <Schema Namespace="ScheduleServices" xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
+      <EntityContainer Name="ScheduleModel" m:IsDefaultEntityContainer="true">
+        <EntitySet Name="ScheduleOfEvents" EntityType="Shared.Model.Schedule" />
+        <EntitySet Name="Sessions" EntityType="Shared.Model.Session" />
+        <EntitySet Name="Tracks" EntityType="Shared.Model.Track" />
+        <EntitySet Name="TimeSlots" EntityType="Shared.Model.TimeSlot" />
+        <EntitySet Name="Speakers" EntityType="Shared.Model.Speaker" />
+        <EntitySet Name="Manifests" EntityType="Shared.Model.Manifest" />
+        <EntitySet Name="Presenters" EntityType="Shared.Model.Presenter" />
+        <EntitySet Name="Contents" EntityType="Shared.Model.Content" />
+        <EntitySet Name="RelatedSessions" EntityType="Shared.Model.RelatedSession" />
+        <AssociationSet Name="Schedule_Tracks" Association="Shared.Model.Schedule_Tracks">
+          <End Role="Schedule" EntitySet="ScheduleOfEvents" />
+          <End Role="Tracks" EntitySet="Tracks" />
+        </AssociationSet>
+        <AssociationSet Name="Schedule_TimeSlots" Association="Shared.Model.Schedule_TimeSlots">
+          <End Role="Schedule" EntitySet="ScheduleOfEvents" />
+          <End Role="TimeSlots" EntitySet="TimeSlots" />
+        </AssociationSet>
+        <AssociationSet Name="Schedule_Speakers" Association="Shared.Model.Schedule_Speakers">
+          <End Role="Schedule" EntitySet="ScheduleOfEvents" />
+          <End Role="Speakers" EntitySet="Speakers" />
+        </AssociationSet>
+        <AssociationSet Name="Schedule_Sessions" Association="Shared.Model.Schedule_Sessions">
+          <End Role="Schedule" EntitySet="ScheduleOfEvents" />
+          <End Role="Sessions" EntitySet="Sessions" />
+        </AssociationSet>
+        <AssociationSet Name="Session_Manifests" Association="Shared.Model.Session_Manifests">
+          <End Role="Session" EntitySet="Sessions" />
+          <End Role="Manifests" EntitySet="Manifests" />
+        </AssociationSet>
+        <AssociationSet Name="Session_Presenters" Association="Shared.Model.Session_Presenters">
+          <End Role="Session" EntitySet="Sessions" />
+          <End Role="Presenters" EntitySet="Presenters" />
+        </AssociationSet>
+        <AssociationSet Name="Session_DownloadableContent" Association="Shared.Model.Session_DownloadableContent">
+          <End Role="Session" EntitySet="Sessions" />
+          <End Role="DownloadableContent" EntitySet="Contents" />
+        </AssociationSet>
+        <AssociationSet Name="Session_BackgroundMaterials" Association="Shared.Model.Session_BackgroundMaterials">
+          <End Role="Session" EntitySet="Sessions" />
+          <End Role="BackgroundMaterials" EntitySet="Contents" />
+        </AssociationSet>
+        <AssociationSet Name="Session_RelatedSessions" Association="Shared.Model.Session_RelatedSessions">
+          <End Role="Session" EntitySet="Sessions" />
+          <End Role="RelatedSessions" EntitySet="RelatedSessions" />
+        </AssociationSet>
+      </EntityContainer>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

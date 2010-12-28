@@ -4,6 +4,7 @@ namespace ODataLambda.Tests
     using Fakes;
     using NUnit.Framework;
 
+    [TestFixture]
     public class ODataExtensionsTests
     {
         private FakeContext fakeContext;
@@ -54,6 +55,6 @@ namespace ODataLambda.Tests
             var query = fakeContext.Orders.Expand(x => x.Products.Expand(y => y.Order.Product.Order.Product.Id));
 
             query.UriShouldEqual(orders + "$expand=Products/Order/Product/Order/Product/Id");
-        }
+        }     
     }
 }
