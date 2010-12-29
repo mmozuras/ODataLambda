@@ -16,8 +16,8 @@ namespace ODataLambda
         /// <param name="source">The source object for the new link.</param>
         /// <param name="sourceProperty">The property on the source object that identifies the target object of the new link.</param>
         /// <param name="target">The child object involved in the new link that is to be initialized by calling this method. The target object must be a subtype of the type identified by the sourceProperty parameter. If target is set to null, the call represents a delete link operation.</param>
-        public static void SetLink<TSource, TPropType>(this DataServiceContext context, TSource source,
-                                                       Expression<Func<TSource, TPropType>> sourceProperty, object target)
+        public static void SetLink<TSource, TProperty>(this DataServiceContext context, TSource source,
+                                                       Expression<Func<TSource, TProperty>> sourceProperty, object target)
         {
             context.SetLink(source, sourceProperty.ToPropertyPath(), target);
         }
@@ -29,8 +29,8 @@ namespace ODataLambda
         /// <param name="source">The source object for the new link.</param>
         /// <param name="sourceProperty">The property on the source object that returns the related object.</param>
         /// <param name="target">The object related to the source object by the new link. </param>
-        public static void AddLink<TSource, TPropType>(this DataServiceContext context, TSource source,
-                                                       Expression<Func<TSource, TPropType>> sourceProperty, object target)
+        public static void AddLink<TSource, TProperty>(this DataServiceContext context, TSource source,
+                                                       Expression<Func<TSource, TProperty>> sourceProperty, object target)
         {
             context.AddLink(source, sourceProperty.ToPropertyPath(), target);
         }
@@ -42,8 +42,8 @@ namespace ODataLambda
         /// <param name="source">The source object in the link to be marked for deletion.</param>
         /// <param name="sourceProperty">The property on the source object that is used to access the target object.</param>
         /// <param name="target">The target object involved in the link that is bound to the source object. The target object must be of the type identified by the source property or a subtype.</param>
-        public static void DeleteLink<TSource, TPropType>(this DataServiceContext context, TSource source,
-                                                          Expression<Func<TSource, TPropType>> sourceProperty, object target)
+        public static void DeleteLink<TSource, TProperty>(this DataServiceContext context, TSource source,
+                                                          Expression<Func<TSource, TProperty>> sourceProperty, object target)
         {
             context.DeleteLink(source, sourceProperty.ToPropertyPath(), target);
         }
@@ -55,8 +55,8 @@ namespace ODataLambda
         /// <param name="source">The source object in the new link.</param>
         /// <param name="sourceProperty">The property on the source object that represents the link between the source and target object.</param>
         /// <param name="target">The target object in the link that is bound to the source object specified in this call. The target object must be of the type identified by the source property or a subtype.</param>
-        public static void AttachLink<TSource, TPropType>(this DataServiceContext context, TSource source,
-                                                          Expression<Func<TSource, TPropType>> sourceProperty, object target)
+        public static void AttachLink<TSource, TProperty>(this DataServiceContext context, TSource source,
+                                                          Expression<Func<TSource, TProperty>> sourceProperty, object target)
         {
             context.AttachLink(source, sourceProperty.ToPropertyPath(), target);
         }
@@ -68,8 +68,8 @@ namespace ODataLambda
         /// <param name="source">The source object participating in the link to be marked for deletion.</param>
         /// <param name="sourceProperty">The property on the source object that represents the source in the link between the source and the target.</param>
         /// <param name="target">The target object involved in the link that is bound to the source object. The target object must be of the type identified by the source property or a subtype.</param>
-        public static void DetachLink<TSource, TPropType>(this DataServiceContext context, TSource source,
-                                                          Expression<Func<TSource, TPropType>> sourceProperty, object target)
+        public static void DetachLink<TSource, TProperty>(this DataServiceContext context, TSource source,
+                                                          Expression<Func<TSource, TProperty>> sourceProperty, object target)
         {
             context.DetachLink(source, sourceProperty.ToPropertyPath(), target);
         }
@@ -79,11 +79,24 @@ namespace ODataLambda
         /// </summary>
         /// <param name="context"></param>
         /// <param name="entity">The entity that contains the property to load.</param>
-        /// <param name="property">The property to load..</param>
+        /// <param name="property">The property to load.</param>
         public static void LoadProperty<T, TProperty>(this DataServiceContext context, T entity,
                                                       Expression<Func<T, TProperty>> property)
         {
             context.LoadProperty(entity, property.ToPropertyPath());
+        }
+
+        /// <summary>
+        /// Loads deferred content for a specified property from the data service.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="entity">The entity that contains the property to load.</param>
+        /// <param name="property">The property to load.</param>
+        /// <param name="continuation">A DataServiceQueryContinuation object that represents the next page of related entities to load from the data service.</param>
+        public static void LoadProperty<T, TProperty>(this DataServiceContext context, T entity,
+                                                      Expression<Func<T, TProperty>> property, DataServiceQueryContinuation<T> continuation)
+        {
+            context.LoadProperty(entity, property.ToPropertyPath(), continuation);
         }
 
         /// <summary>
