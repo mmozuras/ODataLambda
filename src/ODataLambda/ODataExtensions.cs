@@ -19,8 +19,7 @@ namespace ODataLambda
         public static void SetLink<TSource, TPropType>(this DataServiceContext context, TSource source,
                                                        Expression<Func<TSource, TPropType>> sourceProperty, object target)
         {
-            string propertyPath = sourceProperty.ToPropertyPath();
-            context.SetLink(source, propertyPath, target);
+            context.SetLink(source, sourceProperty.ToPropertyPath(), target);
         }
 
         /// <summary>
@@ -33,8 +32,7 @@ namespace ODataLambda
         public static void AddLink<TSource, TPropType>(this DataServiceContext context, TSource source,
                                                        Expression<Func<TSource, TPropType>> sourceProperty, object target)
         {
-            string propertyPath = sourceProperty.ToPropertyPath();
-            context.AddLink(source, propertyPath, target);
+            context.AddLink(source, sourceProperty.ToPropertyPath(), target);
         }
 
         /// <summary>
@@ -47,8 +45,7 @@ namespace ODataLambda
         public static void DeleteLink<TSource, TPropType>(this DataServiceContext context, TSource source,
                                                           Expression<Func<TSource, TPropType>> sourceProperty, object target)
         {
-            string propertyPath = sourceProperty.ToPropertyPath();
-            context.DeleteLink(source, propertyPath, target);
+            context.DeleteLink(source, sourceProperty.ToPropertyPath(), target);
         }
 
         /// <summary>
@@ -61,8 +58,7 @@ namespace ODataLambda
         public static void AttachLink<TSource, TPropType>(this DataServiceContext context, TSource source,
                                                           Expression<Func<TSource, TPropType>> sourceProperty, object target)
         {
-            string propertyPath = sourceProperty.ToPropertyPath();
-            context.AttachLink(source, propertyPath, target);
+            context.AttachLink(source, sourceProperty.ToPropertyPath(), target);
         }
 
         /// <summary>
@@ -75,8 +71,7 @@ namespace ODataLambda
         public static void DetachLink<TSource, TPropType>(this DataServiceContext context, TSource source,
                                                           Expression<Func<TSource, TPropType>> sourceProperty, object target)
         {
-            string propertyPath = sourceProperty.ToPropertyPath();
-            context.DetachLink(source, propertyPath, target);
+            context.DetachLink(source, sourceProperty.ToPropertyPath(), target);
         }
 
         /// <summary>
@@ -88,8 +83,7 @@ namespace ODataLambda
         public static void LoadProperty<T, TProperty>(this DataServiceContext context, T entity,
                                                       Expression<Func<T, TProperty>> property)
         {
-            string propertyPath = property.ToPropertyPath();
-            context.LoadProperty(entity, propertyPath);
+            context.LoadProperty(entity, property.ToPropertyPath());
         }
 
         /// <summary>
@@ -109,8 +103,7 @@ namespace ODataLambda
         /// <param name="property">The property to expand.</param>
         public static DataServiceQuery<T> Expand<T, TProperty>(this DataServiceQuery<T> query, Expression<Func<T, TProperty>> property)
         {
-            string propertyPath = property.ToPropertyPath();
-            return query.Expand(propertyPath);
+            return query.Expand(property.ToPropertyPath());
         }
 
         /// <summary>
