@@ -122,5 +122,12 @@ namespace ODataLambda.Tests
             fakeContext.Attach(order);
             fakeContext.Entities.SingleOrDefault(x => x.Entity == order).State.ShouldEqual(EntityStates.Unchanged);
         }
+
+        [Test]
+        public void Should_create_query_without_providing_set_name()
+        {
+            DataServiceQuery<FakeOrder> query = fakeContext.CreateQuery<FakeContext, FakeOrder>();
+            query.UriShouldEqual("http://localhost/Fake/Orders");
+        }
     }
 }

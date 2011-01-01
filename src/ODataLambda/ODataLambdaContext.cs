@@ -25,7 +25,7 @@ namespace ODataLambda
         /// </summary>
         public DataServiceQuery<T> Query<T>()
         {
-            return InnerContext.CreateQuery<TContext, T>(); ;
+            return InnerContext.CreateQuery<TContext, T>();
         }
 
         /// <summary>
