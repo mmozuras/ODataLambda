@@ -112,7 +112,15 @@ namespace ODataLambda.Tests
         {
             var order = new FakeOrder();
             fakeContext.AddObject(order);
-            fakeContext.Entities.SingleOrDefault(x => x.Entity == order).ShouldNotBeNull();
+            fakeContext.Entities.SingleOrDefault(x => x.Entity == order).State.ShouldEqual(EntityStates.Added);
+        }
+
+        [Test]
+        public void Should_attach_object_without_providing_set_name()
+        {
+            var order = new FakeOrder();
+            fakeContext.Attach(order);
+            fakeContext.Entities.SingleOrDefault(x => x.Entity == order).State.ShouldEqual(EntityStates.Unchanged);
         }
     }
 }

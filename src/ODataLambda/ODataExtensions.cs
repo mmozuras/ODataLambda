@@ -16,12 +16,19 @@ namespace ODataLambda
         /// <param name="entity">The resource to be tracked by the DataServiceContext in the added state.</param>
         public static void AddObject<TContext, T>(this TContext context, T entity) where TContext : DataServiceContext
         {
-            string entitySetName = GetReferenceTypeProperties<TContext>()
-                .Where(x => x.PropertyType == typeof (DataServiceQuery<T>))
-                .Single()
-                .Name;
-
+            string entitySetName = GetEntitySetNameFor<TContext, T>();
             context.AddObject(entitySetName, entity);
+        }        
+
+        /// <summary>
+        /// Notifies context to start tracking the specified resource and supplies the location of the resource within the specified resource set.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="entity">The entity to add.</param>
+        public static void Attach<TContext, T>(this TContext context, T entity) where TContext : DataServiceContext
+        {
+            string entitySetName = GetEntitySetNameFor<TContext, T>();
+            context.AttachTo(entitySetName, entity);
         }
 
         /// <summary>
@@ -151,6 +158,14 @@ namespace ODataLambda
         public static string Expand<T, TProperty>(this DataServiceCollection<T> collection, Expression<Func<T, TProperty>> property)
         {
             return property.ToPropertyPath();
+        }
+
+        private static string GetEntitySetNameFor<TContext, T>() where TContext : DataServiceContext
+        {
+            return GetReferenceTypeProperties<TContext>()
+                .Where(x => x.PropertyType == typeof(DataServiceQuery<T>))
+                .Single()
+                .Name;
         }
 
         private static void ForEachProperty<T>(Action<PropertyInfo> action)
