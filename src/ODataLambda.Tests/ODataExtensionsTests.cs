@@ -1,8 +1,11 @@
 namespace ODataLambda.Tests
 {
+    using System.Data.Services.Client;
+    using System.Linq;
     using Extensions;
     using Fakes;
     using NUnit.Framework;
+    using Should;
 
     [TestFixture]
     public class ODataExtensionsTests
@@ -77,12 +80,22 @@ namespace ODataLambda.Tests
         public void Should_add_link()
         {
             fakeContext.AddLink(fakeOrder, x => x.Products, fakeProduct);
+
+            LinkDescriptor link = fakeContext.Links.Single();
+            link.Source.ShouldEqual(fakeOrder);
+            link.SourceProperty.ShouldEqual("Products");
+            link.Target.ShouldEqual(fakeProduct);
         }
 
         [Test]
         public void Should_set_link()
         {
             fakeContext.SetLink(fakeOrder, x => x.Product, fakeProduct);
+
+            LinkDescriptor link = fakeContext.Links.Single();
+            link.Source.ShouldEqual(fakeOrder);
+            link.SourceProperty.ShouldEqual("Product");
+            link.Target.ShouldEqual(fakeProduct);
         }
 
         [Test]
@@ -90,6 +103,16 @@ namespace ODataLambda.Tests
         {
             fakeContext.AddLink(fakeOrder, x => x.Products, fakeProduct);
             fakeContext.DeleteLink(fakeOrder, x => x.Products, fakeProduct);
+
+            fakeContext.Links.ShouldBeEmpty();
+        }
+
+        [Test]
+        public void Should_add_object_without_providing_set_name()
+        {
+            var order = new FakeOrder();
+            fakeContext.AddObject(order);
+            fakeContext.Entities.SingleOrDefault(x => x.Entity == order).ShouldNotBeNull();
         }
     }
 }

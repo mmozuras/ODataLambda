@@ -10,6 +10,21 @@ namespace ODataLambda
     public static class ODataExtensions
     {
         /// <summary>
+        /// Adds the specified object to the set of objects that the DataServiceContext is tracking.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="entity">The resource to be tracked by the DataServiceContext in the added state.</param>
+        public static void AddObject<TContext, T>(this TContext context, T entity) where TContext : DataServiceContext
+        {
+            string entitySetName = GetReferenceTypeProperties<TContext>()
+                .Where(x => x.PropertyType == typeof (DataServiceQuery<T>))
+                .Single()
+                .Name;
+
+            context.AddObject(entitySetName, entity);
+        }
+
+        /// <summary>
         /// Notifies the DataServiceContext that a new link exists between the objects specified and that the link is represented by the property specified by the sourceProperty parameter.
         /// </summary>
         /// <param name="context"></param>
