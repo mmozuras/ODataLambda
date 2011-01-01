@@ -32,6 +32,16 @@ namespace ODataLambda
         }
 
         /// <summary>
+        /// Creates a data service query for data of a specified generic type.
+        /// </summary>
+        /// <param name="context"></param>
+        public static DataServiceQuery<T> CreateQuery<TContext, T>(this TContext context) where TContext : DataServiceContext
+        {
+            string entitySetName = GetEntitySetNameFor<TContext, T>();
+            return context.CreateQuery<T>(entitySetName);
+        }
+
+        /// <summary>
         /// Notifies the DataServiceContext that a new link exists between the objects specified and that the link is represented by the property specified by the sourceProperty parameter.
         /// </summary>
         /// <param name="context"></param>

@@ -7,18 +7,26 @@ namespace ODataLambda
     /// <summary>
     /// Just a Facade over DataServiceContext, hides methods, that are not strongly typed.
     /// </summary>
-    public class ODataLambdaContext
+    public class ODataLambdaContext<TContext> where TContext : DataServiceContext
     {
         /// <summary>
         /// Initializes a new ODataLambdaContext
         /// </summary>
         /// <param name="context"></param>
-        public ODataLambdaContext(DataServiceContext context)
+        public ODataLambdaContext(TContext context)
         {
             InnerContext = context;
         }
 
-        public DataServiceContext InnerContext { get; private set; }
+        public TContext InnerContext { get; private set; }
+
+        /// <summary>
+        /// Creates a data service query for data of a specified generic type.
+        /// </summary>
+        public DataServiceQuery<T> Query<T>()
+        {
+            return InnerContext.CreateQuery<TContext, T>(); ;
+        }
 
         /// <summary>
         /// Adds the specified object to the set of objects that DataServiceContext is tracking.
