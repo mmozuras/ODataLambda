@@ -18,6 +18,9 @@ namespace ODataLambda
             InnerContext = context;
         }
 
+        /// <summary>
+        /// The DataServiceContext, over which this class is a Facade.
+        /// </summary>
         public TContext InnerContext { get; private set; }
 
         /// <summary>
